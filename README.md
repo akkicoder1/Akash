@@ -22,6 +22,23 @@
    npm run dev
    ```
 
+## Evolution API required config
+Set these required variables:
+- `EVOLUTION_BASE_URL=https://your-evolution-api-domain.com`
+- `EVOLUTION_API_KEY=your-evolution-api-key`
+- `EVOLUTION_INSTANCE=your-instance-name`
+- `EVOLUTION_WEBHOOK_SECRET=change-me`
+
+Webhook endpoint in Evolution dashboard:
+- `POST /api/webhooks/evolution`
+- or event-specific: `POST /api/webhooks/evolution/:eventName`
+
+For security, backend validates webhook secret from one of:
+- `x-evolution-webhook-secret`
+- `x-webhook-secret`
+- `x-api-secret`
+- query/body `secret`
+
 ## Frontend/Backend linking (env-driven)
 Set these variables so hosting links can be changed without code edits:
 - `BACKEND_PUBLIC_URL`: public backend base URL (e.g. production API domain)
@@ -35,7 +52,7 @@ You can inspect effective runtime values via:
 - `GET /api/automation/check`
 
 ## Evolution automation for offers & product links
-The backend now supports admin-triggered broadcast campaigns to all known WhatsApp contacts (from conversations) or a custom recipient list.
+The backend supports admin-triggered broadcast campaigns to all known WhatsApp contacts (from conversations) or a custom recipient list.
 
 - Preview payload/message and recipient count:
   - `POST /api/automation/mass-message/preview`
@@ -72,6 +89,7 @@ Default title/text/links/throttling can be controlled via:
 - `POST /api/auth/signup`
 - `POST /api/auth/login`
 - `POST /api/webhooks/evolution` - Evolution webhook ingestion.
+- `POST /api/webhooks/evolution/:eventName` - event style webhook ingestion.
 
 ### Protected (Bearer token required)
 - `GET /api/auth/me`
@@ -83,14 +101,3 @@ Default title/text/links/throttling can be controlled via:
 ### Protected (admin only)
 - `POST /api/automation/mass-message/preview`
 - `POST /api/automation/mass-message/send`
-
-## Webhook payload expectations
-The webhook processor accepts common Evolution payload forms:
-- `body.data.key.remoteJid` for sender.
-- `body.data.message.conversation` or `extendedTextMessage.text` for content.
-
-## Handoff behavior
-If inbound text includes configured handoff keywords (`HUMAN_HANDOFF_KEYWORDS`), the backend:
-1. sets conversation status to `human_handoff`,
-2. creates admin notification, and
-3. sends user a confirmation that a human will respond.

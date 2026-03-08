@@ -15,6 +15,7 @@ const required = [
   'EVOLUTION_BASE_URL',
   'EVOLUTION_API_KEY',
   'EVOLUTION_INSTANCE',
+  'EVOLUTION_WEBHOOK_SECRET',
   'OPENROUTER_API_KEY'
 ];
 
@@ -43,6 +44,7 @@ module.exports = {
     baseUrl: process.env.EVOLUTION_BASE_URL,
     apiKey: process.env.EVOLUTION_API_KEY,
     instance: process.env.EVOLUTION_INSTANCE,
+    webhookSecret: process.env.EVOLUTION_WEBHOOK_SECRET,
     webhookUrl:
       process.env.EVOLUTION_WEBHOOK_URL ||
       `${backendPublicUrl || `http://localhost:${Number(process.env.PORT || 8080)}`}/api/webhooks/evolution`

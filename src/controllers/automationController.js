@@ -10,6 +10,7 @@ function checkAutomation(req, res) {
     'EVOLUTION_BASE_URL',
     'EVOLUTION_API_KEY',
     'EVOLUTION_INSTANCE',
+    'EVOLUTION_WEBHOOK_SECRET',
     'OPENROUTER_API_KEY'
   ];
 
@@ -26,6 +27,7 @@ function checkAutomation(req, res) {
     ok: allEnvPresent && dbReady && linkingReady,
     automation: {
       webhookIngestion: true,
+      webhookSecretValidation: Boolean(config.evolution.webhookSecret),
       aiAutoReply: Boolean(config.openRouter.apiKey && config.openRouter.model),
       humanHandoff: true,
       adminNotifications: true,
